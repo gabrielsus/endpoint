@@ -14,4 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app/
 
+# Agregamos esto para forzar que liste el contenido y verifique el wsgi antes de arrancar
+RUN python -c "import os; print(os.listdir('.')); print(os.listdir('endpoint'))"
+
 CMD ["gunicorn", "endpoint.wsgi:application", "--bind", "0.0.0.0:10000"]
