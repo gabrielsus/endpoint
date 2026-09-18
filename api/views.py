@@ -9,6 +9,9 @@ from django.db import transaction,models
 from django.db.models import F
 import json
 @csrf_exempt
+def home_view(request):
+    return HttpResponse("¡API funcionando correctamente en Render!")
+@csrf_exempt
 def vista(request):
     if request.method == 'GET':
                 return HttpResponse("<h1><font color='blue'>¡Hola desde la API de Django!</font></h1>") 
@@ -16,7 +19,7 @@ def vista(request):
                 return HttpResponse("<h1><font color='green'>¡Hola desde la API de Django! (POST)</font></h1>") 
     else:   
                 return HttpResponse("<h1><font color='red'>Método no permitido</font></h1>", status=405)
-    
+
 ######clase para generar PDF
 class DescargarReportePDFView(APIView):
     def post(self, request):
