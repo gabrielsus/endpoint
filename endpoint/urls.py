@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from api.views import cantidad_administradores_por_banco, listar_tareas_view, obtener_administrador_por_matricula, subir_excel_a_db, vista, DescargarReportePDFView,subir_excel_curl, buscar_administradores_por_nombre, listar_administradores_con_banco,insertar_administrador, actualizar_administrador,eliminar_administrador,obtener_administrador_por_matricula,obtener_productos, home_view
-
+##ultimos cambios para render
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('vista/', vista),
