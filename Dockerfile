@@ -19,4 +19,4 @@ RUN python -c "import os; print(os.listdir('.')); print(os.listdir('endpoint'))"
 
 EXPOSE 10000
 
-CMD gunicorn endpoint.wsgi:application --bind 0.0.0.0:10000
+CMD ["python", "-m", "gunicorn", "endpoint.wsgi:application", "--bind", "0.0.0.0:10000"]
