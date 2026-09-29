@@ -16,6 +16,6 @@ urlpatterns = [
     path('api/eliminar-administrador/<int:admin_id>/', eliminar_administrador, name='eliminar_administrador'),
     path('api/administrador_matricula/<int:matricula>/',obtener_administrador_por_matricula, name='obtener_administrador_por_matricula'),
     path('api/traer-productos/', obtener_productos, name='obtener_productos'),
-    path('api/productos/<int:producto_id>/', obtener_producto_por_id, name='obtener_producto').
+    path('api/productos/<int:producto_id>/', obtener_producto_por_id, name='obtener_producto'),
     path('', home_view, name='home'),
 ]
