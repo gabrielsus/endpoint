@@ -87,6 +87,25 @@ def obtener_administrador_por_matricula(request, matricula):
         return JsonResponse(datos, safe=False)
     except AdministradoresConsorcio.DoesNotExist:
         return JsonResponse({"error": "Administrador no encontrado"}, status=404)
+########obtengo producto por id
+from django.http import JsonResponse
+from .models import Productos
+
+# Obtengo mediante ORM un producto por ID
+def obtener_producto_por_id(request, producto_id):
+    try:
+        producto = Productos.objects.get(id=producto_id)
+        datos = {
+            "id": producto.id,
+            "description": producto.description,
+            "price": str(producto.price),  # El DecimalField se suele pasar como string o float
+            "image": producto.image,
+            "origin": producto.origin,
+            "weight": producto.weight
+        }
+        return JsonResponse(datos, safe=False)
+    except Productos.DoesNotExist:
+        return JsonResponse({"error": "Producto no encontrado"}, status=404)
 
 ########obtengo todos los productos mediante orm
 def obtener_productos(request):
