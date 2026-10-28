@@ -101,7 +101,8 @@ def obtener_producto_por_id(request, producto_id):
             "price": str(producto.price),  # El DecimalField se suele pasar como string o float
             "image": producto.image,
             "origin": producto.origin,
-            "weight": producto.weight
+            "weight": producto.weight,
+            "category": producto.category
         }
         return JsonResponse(datos, safe=False)
     except Productos.DoesNotExist:
@@ -112,6 +113,72 @@ def obtener_productos(request):
     productos = Productos.objects.all()
     datos = list(productos.values())
     return JsonResponse(datos, safe=False)
+
+######Inserto un nuevo productos usando ORM
+@csrf_exempt
+def insertar_producto(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            nuevo_producto = Productos(
+                description=data['description'],
+                price=data['price'],
+                image=data['image'],
+                origin=data.get('origin', ''),
+                weight=data.get('weight', ''),
+                category=data.get('category', '')
+            )
+            nuevo_producto.save()
+            return JsonResponse({"status": "success", "mensaje": "Producto insertado con éxito."})
+        except Exception as e:
+            return JsonResponse({"status": "error", "mensaje": str(e)}, status=400)
+    else:
+        return JsonResponse({"status": "error", "mensaje": "Método no permitido."}, status=405)
+
+###Update de producto por id
+@csrf_exempt
+def actualizar_producto(request, producto_id):
+    if request.method == 'PUT' or request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            producto = Productos.objects.get(id=producto_id)
+
+            # Actualizamos los campos según los datos recibidos
+            producto.description = data.get('description', producto.description)
+            producto.price = data.get('price', producto.price)
+            producto.image = data.get('image', producto.image)
+            producto.origin = data.get('origin', producto.origin)
+            producto.weight = data.get('weight', producto.weight)
+            producto.category = data.get('category', producto.category)
+
+            producto.save()
+            return JsonResponse({"status": "success", "mensaje": "Producto actualizado con éxito."})
+        except Productos.DoesNotExist:
+            return JsonResponse({"status": "error", "mensaje": "Producto no encontrado."}, status=404)
+        except Exception as e:
+            return JsonResponse({"status": "error", "mensaje": str(e)}, status=400)
+    else:
+        return JsonResponse({"status": "error", "mensaje": "Método no permitido."}, status=405)
+
+###elimino un producto por id
+@csrf_exempt
+def eliminar_producto(request, producto_id):
+    if request.method == 'DELETE':
+        try:
+            producto = Productos.objects.get(id=producto_id)
+            producto.delete()
+            return JsonResponse({"status": "success", "mensaje": "Producto eliminado con éxito."})
+        except Productos.DoesNotExist:
+            return JsonResponse({"status": "error", "mensaje": "Producto no encontrado."}, status=404)
+        except Exception as e:
+            return JsonResponse({"status": "error", "mensaje": str(e)}, status=400)
+    else:
+        return JsonResponse({"status": "error", "mensaje": "Método no permitido."}, status=405)
+
+########################################################################
+########################################################################
+########################################################################
+########################################################################
 
 #####hago un update de adminsitrador por id
 @csrf_exempt
